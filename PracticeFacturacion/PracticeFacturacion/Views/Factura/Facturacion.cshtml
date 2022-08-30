@@ -1,0 +1,66 @@
+﻿@model SelectListClientes
+
+@{
+}
+
+<br />
+<div class="text-danger">@TempData["Error"]</div>
+<div clasclass="text-success">@TempData["Validando"]</div>
+<br />
+
+<form asp-action="Ingresar">
+<span>Cliente</span>
+
+<label asp-for="ClienteId" class="form-label"></label>
+<select asp-for="ClienteId" asp-items="Model.Clientes" class="form-select w-25" name="ClienteID"></select>
+
+<span>Cantidad</span>
+<input class="form-control w-25" type="number" name="Cantidad" id="Cantidad"/>
+
+<span>Descripcion del Producto</span>
+<input class="form-control w-25" name="DescripcionProducto"/>
+
+<span>Costo Unitario</span>
+<input class="form-control w-25" type="number" name="CostoUnitario" id="CostoUnitario" onkeyup="Calculo()"/>
+
+<span>ITBIS</span>
+    <input class="form-control w-25" name="ITBIS" id="ITBIS" readonly />
+
+<span>Total</span>
+    <input class="form-control w-25" type="number" name="Total" id="Total" readonly />
+
+<br />
+<button class="btn btn-dark" type="submit">Enviar</button>
+</form>
+
+
+<br />
+<br />
+<partial name="TablaDinamica" model="@TempData["Lista"]"></partial>
+
+<script>
+
+    const Calculo = () =>{
+
+        // CONSTANTES
+        let Cantidad = document.getElementById('Cantidad').value;
+        let CostoUnitario = document.getElementById('CostoUnitario').value;
+        let PreTotal = parseInt(Cantidad) * parseFloat(CostoUnitario);
+        
+        // CALCULAR ITBIS DEL PRETOTAL
+       let ITBIS = parseFloat(PreTotal) * 0.18;
+
+       // CALCULAR COSTO TOTAL.
+       let CostoTotal = parseFloat(PreTotal) + ITBIS;
+
+       // ASIGNANDO VALORES A LOS CAMPOS.
+       document.getElementById('ITBIS').value = ITBIS;
+        document.getElementById('Total').value = CostoTotal;
+
+
+
+    }
+
+
+
+</script>
